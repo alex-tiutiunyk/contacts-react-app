@@ -1,10 +1,15 @@
-import { Link } from "react-router-dom"
+import Contacts from "../components/Contacts"
+import CreateContact from "../components/CreateContact"
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>Index Page</h1>
-      <Link path="/contacts-react-app/15">Post</Link>
+    <div className="flex w-full flex-col items-start md:flex-row pt-7 pb-5">
+      <div className='w-full flex-1 order-2 p-4'>
+        <Contacts/>
+      </div>
+      <aside className="mx-auto w-80 order-1 p-4 md:sticky md:top-0">
+        <CreateContact/>
+      </aside>
     </div>
   )
 }
