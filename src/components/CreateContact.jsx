@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { push, ref, set } from "firebase/database";
 import { db } from "../firebase";
+import PropTypes from "prop-types";
 
-const CreateContact = () => {
+const CreateContact = ({fetchData}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -50,6 +51,7 @@ const CreateContact = () => {
         setErrorEmail(false);
         const newContactRef = push(ref(db, 'contacts'));
         await set(newContactRef, request)
+        fetchData();
         setFirstName('');
         setLastName('');
         setEmail('');
@@ -118,6 +120,10 @@ const CreateContact = () => {
       >Add Contact</button>
     </>
   )
+}
+
+CreateContact.propTypes = {
+  fetchData: PropTypes.func
 }
 
 export default CreateContact

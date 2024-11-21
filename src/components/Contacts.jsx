@@ -1,41 +1,8 @@
-import { useEffect, useState } from "react";
-import { get, ref } from 'firebase/database'
-import { db } from '../firebase'
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom"
 
-const Contacts = () => {
-  const [data, getData] = useState([]);
-
+const Contacts = ({data}) => {
   const noImgUrl = 'https://robohash.org/XKQ.png?set=set1&size=150x150';
-
-  // get data
-  const fetchData = async () => {
-    try {
-      const contactsRef = ref(db, 'contacts')
-      const snapshot = await get(contactsRef)
-      const response = snapshot.val()
-      if (snapshot.exists()) {
-        // transformed output data
-        const outData = Object.entries(response).map(item => {
-          return {
-            id: item[0],
-            ...item[1]
-          }
-        })
-        getData(outData)
-        console.log(outData)
-      } else {
-        console.log("No data")
-        getData([])
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
 
   return (
     <>
@@ -70,6 +37,10 @@ const Contacts = () => {
       ))}
     </>
   )
+}
+
+Contacts.propTypes = {
+  data: PropTypes.array
 }
 
 export default Contacts
