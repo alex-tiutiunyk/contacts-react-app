@@ -3,15 +3,17 @@ import { getDatabase } from "firebase/database";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
+
 const firebaseConfig = {
-  // apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  apiKey: API_KEY,
+  apiKey: (function(){
+    return API_KEY.split('-').map(k => k.split('').reverse().join('')).join('-')
+  })(),
   authDomain: "contacts-test-project-6ff56.firebaseapp.com",
   databaseURL: "https://contacts-test-project-6ff56-default-rtdb.firebaseio.com",
   projectId: "contacts-test-project-6ff56",
   storageBucket: "contacts-test-project-6ff56.firebasestorage.app",
   messagingSenderId: "1089080938649",
-  appId: "1:1089080938649:web:5b22e06c0b8cb07ad3a808"
+  appId: "1:1089080938649:web:e0b030e8f6dc2d7dd3a808"
 };
 
 // Initialize Firebase
