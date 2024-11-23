@@ -9,7 +9,6 @@ import AddTag from "../components/AddTag";
 const SingleContact = () => {
   const {id} = useParams();
   const {data, refetch, isError, isLoading} = useGetOneContactQuery(id);
-  console.log(data)
   const [editContact] = useEditContactMutation();
   
   const [inputValue, setInputValue] = useState('');
@@ -23,10 +22,11 @@ const SingleContact = () => {
   const handleAddTag = async () => {
     try {
       if (inputValue) {
-        const prevTags = data.request.tags;
+        const prevTags = JSON.parse(data.request.tags);
         const newTags = [...prevTags, ...inputValue.split(' ')];
         const set = new Set(newTags.filter(item => item !== ''));
-        const request = {...data.request, tags: [...set]}
+        const request = {...data.request, tags: JSON.stringify([...set])}
+        // const request = {...data.request, tags: JSON.stringify([...set]).replace(/"/g, '')}
         await editContact({...data, id, request});
         setInputValue('');
         refetch();
@@ -38,9 +38,9 @@ const SingleContact = () => {
 
   const handleDeleteTag = async (tagValue) => {
     try {
-      const prevTags = data.request.tags;
+      const prevTags = JSON.parse(data.request.tags);
       const updatedTags = prevTags.filter(tag => tag !== tagValue);
-      const request = {...data.request, tags: [...updatedTags]}
+      const request = {...data.request, tags: JSON.stringify([...updatedTags])}
       await editContact({...data, id, request});
       refetch();
     } catch (error) {
@@ -65,7 +65,7 @@ const SingleContact = () => {
             <a href={'mailto:' + data.request.email} className='text-base font-bold hover:underline'>{data.request.email}</a>
           </div>
         </div>
-        {(data.request.tags.length > 0) ? <h3 className="text-base font-bold">Tags:</h3> : ''}
+        <h3 className="text-base font-bold">Tags:</h3>
         <Tags
           item={data}
           handleDeleteTag={handleDeleteTag}

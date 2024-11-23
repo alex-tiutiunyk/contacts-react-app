@@ -30,7 +30,7 @@ const CreateContact = () => {
         "last name": lastName,
         "email": email,
         "avatar": "",
-        "tags": "",
+        "tags": "[]",
         "created": new Date().toISOString()
       };
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

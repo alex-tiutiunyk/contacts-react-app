@@ -35,7 +35,6 @@ export const contactsApi = createApi({
     }),
     getOneContact: builder.query({
       queryFn: async (id) => {
-        console.log(id)
         try {
           const oneContactRef = ref(db, `contacts/${id}`)
           const snapshot = await get(oneContactRef)
@@ -46,8 +45,7 @@ export const contactsApi = createApi({
         } catch (err) {
           return {error: err}
         }
-      },
-      // providesTags: (  arg) => [{ type: 'Contacts', id: arg }]
+      }
     }),
     addContact: builder.mutation({
       queryFn: async (body) => {
@@ -73,7 +71,7 @@ export const contactsApi = createApi({
           return {error: err}
         }
       },
-      invalidatesTags: (arg) => [{ type: 'Contacts', id: arg.id }]
+      invalidatesTags: (id) => [{ type: 'Contacts', id}]
     }),
     deleteContact: builder.mutation({
       queryFn: async (id) => {

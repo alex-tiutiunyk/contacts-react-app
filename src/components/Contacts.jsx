@@ -4,7 +4,7 @@ import { useDeleteContactMutation, useGetContactsQuery } from "../redux/contacts
 const Contacts = () => {
   const noImgUrl = 'https://robohash.org/XKQ.png?set=set1&size=150x150';
 
-  const {data = [], error} = useGetContactsQuery();
+  const {data = [], isError} = useGetContactsQuery();
   const [deleteContact] = useDeleteContactMutation();
 
   // delete contact
@@ -17,7 +17,7 @@ const Contacts = () => {
 
   return (
     <>
-      {error && <h2>{error}</h2>}
+      {isError && <div>Loading error!</div>}
       {data.map(item => (
         <Link to={`/contacts-react-app/${item.id}`} key={item.id} className="rounded-md bg-gray-200 hover:bg-gray-300 transition hover:shadow-gray-400 hover:shadow-md p-4 mb-4 pr-14 flex gap-x-3 relative">
           <div className='w-[59px] h-[59px] flex-none overflow-hidden'>
@@ -30,10 +30,10 @@ const Contacts = () => {
               </div>
             </h3>
             <span className='text-base font-bold hover:underline'>{item.request.email}</span>
-            {(item.request.tags.length > 0)
+            {(JSON.parse(item.request.tags).length > 0)
               ? <ul className='flex flex-wrap text-sm leading-5 gap-2 pt-3 pb-2'>
                   {
-                    item.request.tags.map(tag => <li key={item.id + '-' + tag} className='bg-gray-400 px-2 rounded cursor-default'>{tag}</li>)
+                    JSON.parse(item.request.tags).map(tag => <li key={item.id + '-' + tag} className='bg-gray-400 px-2 rounded cursor-default'>{tag}</li>)
                   }
                 </ul>
               : ''
