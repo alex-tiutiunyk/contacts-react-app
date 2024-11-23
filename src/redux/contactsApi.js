@@ -33,6 +33,22 @@ export const contactsApi = createApi({
         ...result.map(({ id }) => ({ type: 'Contacts', id }))
       ]
     }),
+    getOneContact: builder.query({
+      queryFn: async (id) => {
+        console.log(id)
+        try {
+          const oneContactRef = ref(db, `contacts/${id}`)
+          const snapshot = await get(oneContactRef)
+          const response = snapshot.val()
+          if (snapshot.exists()) {
+            return {data: response}
+          }
+        } catch (err) {
+          return {error: err}
+        }
+      },
+      // providesTags: (  arg) => [{ type: 'Contacts', id: arg }]
+    }),
     addContact: builder.mutation({
       queryFn: async (body) => {
         try {
@@ -44,6 +60,20 @@ export const contactsApi = createApi({
         }
       },
       invalidatesTags: ['Contacts']
+    }),
+    editContact: builder.mutation({
+      queryFn: async (body) => {
+        try {
+          const editContactRef = ref(db, `contacts/${body.id}`);
+          const data = await set(editContactRef, {
+            request: body.request
+          })
+          return {data: data}
+        } catch (err) {
+          return {error: err}
+        }
+      },
+      invalidatesTags: (arg) => [{ type: 'Contacts', id: arg.id }]
     }),
     deleteContact: builder.mutation({
       queryFn: async (id) => {
@@ -60,4 +90,4 @@ export const contactsApi = createApi({
   })
 })
 
-export const { useGetContactsQuery, useAddContactMutation, useDeleteContactMutation } = contactsApi;
+export const { useGetContactsQuery, useAddContactMutation, useDeleteContactMutation, useGetOneContactQuery, useEditContactMutation } = contactsApi;
