@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { push, ref, set } from "firebase/database";
-import { db } from "../firebase";
-import PropTypes from "prop-types";
+import { useAddContactMutation } from "../redux/contactsApi";
 
-const CreateContact = ({fetchData}) => {
+const CreateContact = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [errorName, setErrorName] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorEmailMessage, setErrorEmailMessage] = useState('Enter your email');
+
+  const [addContact] = useAddContactMutation();
 
   const handleFirstName = (e) => {
     setFirstName(e.target.value);
@@ -26,14 +26,12 @@ const CreateContact = ({fetchData}) => {
   const handleCreateContact = async () => {
     try {
       const request = {
-        "request": {
-          "first name": firstName,
-          "last name": lastName,
-          "email": email,
-          "avatar": "",
-          "tags": "",
-          "created": new Date().toISOString()
-        }
+        "first name": firstName,
+        "last name": lastName,
+        "email": email,
+        "avatar": "",
+        "tags": "",
+        "created": new Date().toISOString()
       };
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -49,9 +47,7 @@ const CreateContact = ({fetchData}) => {
         setErrorEmail(true);
       } else if ((firstName || lastName) && emailRegex.test(email)) {
         setErrorEmail(false);
-        const newContactRef = push(ref(db, 'contacts'));
-        await set(newContactRef, request)
-        fetchData();
+        await addContact({request}).unwrap();
         setFirstName('');
         setLastName('');
         setEmail('');
@@ -120,10 +116,6 @@ const CreateContact = ({fetchData}) => {
       >Add Contact</button>
     </>
   )
-}
-
-CreateContact.propTypes = {
-  fetchData: PropTypes.func
 }
 
 export default CreateContact

@@ -1,24 +1,23 @@
-import { ref, remove } from "firebase/database";
 import { Link } from "react-router-dom"
-import { db } from "../firebase";
-import { useGetContactsQuery } from "../redux/contactsApi";
+import { useDeleteContactMutation, useGetContactsQuery } from "../redux/contactsApi";
 
 const Contacts = () => {
   const noImgUrl = 'https://robohash.org/XKQ.png?set=set1&size=150x150';
 
   const {data = [], error} = useGetContactsQuery();
-  console.log(data)
+  const [deleteContact] = useDeleteContactMutation();
+
   // delete contact
-  const handleDeleteContact = async (e, item) => {
+  const handleDeleteContact = (e, item) => {
     // ignore click on parent block
     e.preventDefault();
     const {id} = item;
-    const delContactRef = ref(db, `contacts/${id}`);
-    await remove(delContactRef)
+    deleteContact(id);
   }
 
   return (
     <>
+      {error && <h2>{error}</h2>}
       {data.map(item => (
         <Link to={`/contacts-react-app/${item.id}`} key={item.id} className="rounded-md bg-gray-200 hover:bg-gray-300 transition hover:shadow-gray-400 hover:shadow-md p-4 mb-4 pr-14 flex gap-x-3 relative">
           <div className='w-[59px] h-[59px] flex-none overflow-hidden'>

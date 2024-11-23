@@ -6,10 +6,6 @@ const contactsSlice = createSlice({
     contacts: []
   },
   reducers: {
-    // getContacts(state, action) {
-    //   state.contacts.push
-
-    // },
     // getOneContact(state, action) {
       
     // },
@@ -22,6 +18,7 @@ const contactsSlice = createSlice({
   }
 })
 
-export const {getContacts, getOneContact, addContact, deleteContact} = contactsSlice.actions;
+// export ections
+// export const {} = contactsSlice.actions;
 
 export default contactsSlice.reducer;
