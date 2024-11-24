@@ -5,15 +5,17 @@ import { tagDelSwitch } from "../redux/tagsDeleteSwitcher";
 import { useDispatch } from "react-redux";
 import Tags from "../components/Tags";
 import AddTag from "../components/AddTag";
+import Spinner from "../components/Spinner";
 
 const SingleContact = () => {
   const {id} = useParams();
   const {data, refetch, isError, isLoading} = useGetOneContactQuery(id);
   const [editContact] = useEditContactMutation();
-  
   const [inputValue, setInputValue] = useState('');
-  const noImgUrl = 'https://robohash.org/XKQ.png?set=set1&size=150x150';
   const dispatch = useDispatch();
+
+  const noImgUrl = 'https://robohash.org/XKQ.png?set=set1&size=150x150';
+  const isTagDel = true;
 
   useEffect(() => {
     dispatch(tagDelSwitch({newState: true}));
@@ -49,10 +51,10 @@ const SingleContact = () => {
   }
 
   return (
-    <div className="p-4 ">
+    <div className="p-4 grow">
       <Link to="/contacts-react-app" className="inline-block p-2 text-base font-bold border-solid border border-gray-300 rounded-md transition hover:bg-sky-500 hover:border-sky-500 hover:text-white hover:shadow-sky-200 hover:shadow-md" >&lt; Back</Link>
       {isError && <div>Loading error!</div>}
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <Spinner />}
       {data && <div className="p-4 max-w-xl mx-auto">
         <div className="flex gap-x-3 items-center mb-4">
           <div className='w-[120px] h-[120px] flex-none overflow-hidden'>
@@ -69,6 +71,7 @@ const SingleContact = () => {
         <Tags
           item={data}
           handleDeleteTag={handleDeleteTag}
+          isTagDel={isTagDel}
         />
         <AddTag
           inputValue={inputValue}

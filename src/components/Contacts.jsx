@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom"
 import { useDeleteContactMutation, useGetContactsQuery } from "../redux/contactsApi";
 import Spinner from "./Spinner";
+import Tags from "./Tags";
 
 const Contacts = () => {
   const noImgUrl = 'https://robohash.org/XKQ.png?set=set1&size=150x150';
+  const isTagDel = false;
 
   const {data = [], isError, isLoading} = useGetContactsQuery();
   const [deleteContact] = useDeleteContactMutation();
@@ -32,14 +34,10 @@ const Contacts = () => {
               </div>
             </h3>
             <span className='text-base font-bold hover:underline'>{item.request.email}</span>
-            {(JSON.parse(item.request.tags).length > 0)
-              ? <ul className='flex flex-wrap text-sm leading-5 gap-2 pt-3 pb-2'>
-                  {
-                    JSON.parse(item.request.tags).map(tag => <li key={item.id + '-' + tag} className='bg-gray-400 px-2 rounded cursor-default'>{tag}</li>)
-                  }
-                </ul>
-              : ''
-            }
+            <Tags
+              item={item}
+              isTagDel={isTagDel}
+            />
           </div>
           <button
             type="button"

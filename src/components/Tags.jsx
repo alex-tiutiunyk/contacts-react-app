@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 
-const Tags = ({item, handleDeleteTag}) => {
-  const isTagDel = useSelector(state => state.tagsDelState.isTagDel);
+const Tags = ({item, handleDeleteTag, isTagDel}) => {
 
   const tags = JSON.parse(item.request.tags)
   console.log(tags.length)
@@ -27,7 +25,8 @@ const Tags = ({item, handleDeleteTag}) => {
 
 Tags.propTypes = {
   item: PropTypes.object,
-  handleDeleteTag: PropTypes.func
+  handleDeleteTag: PropTypes.func,
+  isTagDel: PropTypes.bool
 };
 
 export default Tags;
