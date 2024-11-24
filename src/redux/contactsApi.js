@@ -21,7 +21,6 @@ export const contactsApi = createApi({
                 ...item[1]
               }
             })
-            console.log(outData)
             return {data: outData}
           }
         } catch (err) {

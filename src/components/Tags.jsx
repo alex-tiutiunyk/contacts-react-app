@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 const Tags = ({item, handleDeleteTag, isTagDel}) => {
 
   const tags = JSON.parse(item.request.tags)
-  console.log(tags.length)
 
   return (
     <>

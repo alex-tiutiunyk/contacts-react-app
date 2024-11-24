@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useEditContactMutation, useGetOneContactQuery } from "../redux/contactsApi";
-import { tagDelSwitch } from "../redux/tagsDeleteSwitcher";
-import { useDispatch } from "react-redux";
 import Tags from "../components/Tags";
 import AddTag from "../components/AddTag";
 import Spinner from "../components/Spinner";
@@ -12,14 +10,9 @@ const SingleContact = () => {
   const {data, refetch, isError, isLoading} = useGetOneContactQuery(id);
   const [editContact] = useEditContactMutation();
   const [inputValue, setInputValue] = useState('');
-  const dispatch = useDispatch();
 
   const noImgUrl = 'https://robohash.org/XKQ.png?set=set1&size=150x150';
   const isTagDel = true;
-
-  useEffect(() => {
-    dispatch(tagDelSwitch({newState: true}));
-  }, [])
 
   const handleAddTag = async () => {
     try {
